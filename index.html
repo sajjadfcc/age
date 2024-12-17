@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Age Calculator</title>
+    <style>
+        /* General body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Container styling */
+        .container {
+            background: #fff;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Input field styling */
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #2193b0;
+        }
+
+        /* Button styling */
+        button {
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            transform: translateY(-3px);
+        }
+
+        /* Result section */
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+            font-weight: bold;
+        }
+
+        /* Animation for result */
+        #result p {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Modern Age Calculator</h1>
+        <p>Enter your date of birth below:</p>
+        <input type="date" id="birthdate">
+        <button onclick="calculateAge()">Calculate Age</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateAge() {
+            const birthdate = document.getElementById('birthdate').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!birthdate) {
+                resultDiv.innerHTML = "<p style='color: red;'>Please select your birthdate!</p>";
+                return;
+            }
+
+            const birthDateObj = new Date(birthdate);
+            const now = new Date();
+
+            let years = now.getFullYear() - birthDateObj.getFullYear();
+            let months = now.getMonth() - birthDateObj.getMonth();
+            let days = now.getDate() - birthDateObj.getDate();
+
+            // Adjust for incomplete months or days
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                days += lastMonth;
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Calculate total time passed
+            const totalDays = Math.floor((now - birthDateObj) / (1000 * 60 * 60 * 24));
+            const totalHours = totalDays * 24;
+            const totalMinutes = totalHours * 60;
+            const totalSeconds = totalMinutes * 60;
+
+            // Display the results with a clean format
+            resultDiv.innerHTML = `
+                <p>Your exact age:</p>
+                <p><strong>${years}</strong> years, <strong>${months}</strong> months, and <strong>${days}</strong> days.</p>
+                <p>Total time passed since birth:</p>
+                <p><strong>${totalDays}</strong> days</p>
+                <p><strong>${totalHours}</strong> hours</p>
+                <p><strong>${totalMinutes}</strong> minutes</p>
+                <p><strong>${totalSeconds}</strong> seconds</p>
+            `;
+        }
+    </script>
+</body>
+</html>
